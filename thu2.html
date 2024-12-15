@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/thu2.css" />
+  </head>
+  <body>
+    <div class="search-container">
+      <input type="text" id="search-bar" placeholder="Tìm kiếm game..." />
+      <button onclick="searchGame()">Tìm kiếm</button>
+    </div>
+    <div id="search-results"></div>
+    <form id="payment-form">
+      <input type="text" placeholder="Số thẻ" required />
+      <input type="text" placeholder="Tên chủ thẻ" required />
+      <input type="text" placeholder="Ngày hết hạn" required />
+      <button type="submit">Thanh toán</button>
+    </form>
+    <div class="confirmation">
+      <h2>Thanh toán thành công!</h2>
+      <p>Cảm ơn bạn đã mua game: GameName</p>
+    </div>
+    <div>
+      <label for="rating">Đánh giá:</label>
+      <select id="rating">
+        <option value="1">1 sao</option>
+        <option value="2">2 sao</option>
+        <option value="3">3 sao</option>
+        <option value="4">4 sao</option>
+        <option value="5">5 sao</option>
+      </select>
+      <textarea placeholder="Bình luận của bạn"></textarea>
+      <button onclick="submitReview()">Gửi</button>
+    </div>
+    <div class="share-buttons">
+      <button onclick="shareToSocial('facebook')">Chia sẻ Facebook</button>
+      <button onclick="shareToSocial('twitter')">Chia sẻ Twitter</button>
+    </div>
+    <form id="user-profile">
+      <input type="text" placeholder="Họ và tên" value="Nguyen Van A" />
+      <input type="email" placeholder="Email" value="example@gmail.com" />
+      <button type="submit">Cập nhật</button>
+    </form>
+    <button onclick="cancelPayment()">Hủy thanh toán</button>
+    <button onclick="addToFavorites('GameID')">Thêm vào yêu thích</button>
+    <table id="transaction-history">
+      <tr>
+        <th>Ngày</th>
+        <th>Tên game</th>
+        <th>Số tiền</th>
+      </tr>
+    </table>
+    <form id="support-form">
+      <textarea placeholder="Nhập yêu cầu hỗ trợ của bạn"></textarea>
+      <button type="submit">Gửi yêu cầu</button>
+    </form>
+    <table id="order-management">
+      <thead>
+        <tr>
+          <th>Mã đơn hàng</th>
+          <th>Khách hàng</th>
+          <th>Ngày đặt</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td>
+          <td>Nguyễn Văn A</td>
+          <td>2024-12-01</td>
+          <td>Đang xử lý</td>
+          <td class="action-buttons">
+            <button class="approve">Xác nhận</button>
+            <button class="cancel">Hủy</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#002</td>
+          <td>Trần Thị B</td>
+          <td>2024-12-02</td>
+          <td>Đã giao</td>
+          <td class="action-buttons">
+            <button class="approve" disabled>Hoàn tất</button>
+            <button class="cancel">Hủy</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form id="add-game-form">
+      <label for="game-name">Tên game:</label>
+      <input type="text" id="game-name" placeholder="Nhập tên game" />
+
+      <label for="game-description">Mô tả:</label>
+      <textarea
+        id="game-description"
+        placeholder="Nhập mô tả về game"
+      ></textarea>
+
+      <label for="game-price">Giá:</label>
+      <input type="number" id="game-price" placeholder="Nhập giá" />
+
+      <label for="game-image">Hình ảnh:</label>
+      <input type="file" id="game-image" />
+
+      <button type="submit">Thêm game</button>
+    </form>
+    <table id="category-management">
+      <thead>
+        <tr>
+          <th>Mã danh mục</th>
+          <th>Tên danh mục</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td>
+          <td>Game nhập vai</td>
+          <td>
+            <button class="edit-category">Chỉnh sửa</button>
+            <button class="delete-category">Xóa</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#002</td>
+          <td>Game bắn súng</td>
+          <td>
+            <button class="edit-category">Chỉnh sửa</button>
+            <button class="delete-category">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="sales-report">
+      <h2>Thống kê doanh thu</h2>
+      <div id="sales-chart">
+        <!-- Khu vực biểu đồ -->
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Tháng</th>
+            <th>Doanh thu</th>
+            <th>Số game bán</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tháng 11</td>
+            <td>50,000,000 VND</td>
+            <td>120</td>
+          </tr>
+          <tr>
+            <td>Tháng 12</td>
+            <td>75,000,000 VND</td>
+            <td>180</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <table id="feedback-management">
+      <thead>
+        <tr>
+          <th>ID Phản hồi</th>
+          <th>Khách hàng</th>
+          <th>Nội dung</th>
+          <th>Thời gian</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td>
+          <td>Nguyễn Văn A</td>
+          <td>Game rất thú vị!</td>
+          <td>2024-12-01</td>
+          <td>
+            <button class="reply">Trả lời</button>
+            <button class="delete-feedback">Xóa</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#002</td>
+          <td>Trần Thị B</td>
+          <td>Giá hơi cao, nhưng đáng mua.</td>
+          <td>2024-12-02</td>
+          <td>
+            <button class="reply">Trả lời</button>
+            <button class="delete-feedback">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table id="user-management">
+      <thead>
+        <tr>
+          <th>Mã người dùng</th>
+          <th>Tên</th>
+          <th>Email</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td>
+          <td>Nguyễn Văn A</td>
+          <td>a.nguyen@gmail.com</td>
+          <td>
+            <button class="edit-user">Sửa</button>
+            <button class="delete-user">Xóa</button>
+          </td>
+        </tr>
+        <tr>
+          <td>#002</td>
+          <td>Trần Thị B</td>
+          <td>b.tran@gmail.com</td>
+          <td>
+            <button class="edit-user">Sửa</button>
+            <button class="delete-user">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-user">Thêm người dùng mới</button>
+    <ul id="system-notifications">
+      <li class="new">
+        <strong>Khuyến mãi:</strong> Giảm giá 50% tất cả các game nhân dịp lễ!
+      </li>
+      <li>
+        <strong>Bảo trì:</strong> Hệ thống sẽ bảo trì từ 12:00 đến 14:00 ngày
+        mai.
+      </li>
+    </ul>
+    <form id="contact-support">
+      <label for="support-message">Tin nhắn hỗ trợ:</label>
+      <textarea
+        id="support-message"
+        placeholder="Mô tả vấn đề bạn gặp phải..."
+      ></textarea>
+      <button type="submit">Gửi yêu cầu</button>
+    </form>
+    <button class="logout">Đăng xuất</button>
+    <table id="customer-info">
+      <thead>
+        <tr>
+          <th>Mã khách hàng</th>
+          <th>Tên</th>
+          <th>Email</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#001</td>
+          <td>Nguyễn Văn A</td>
+          <td>a.nguyen@gmail.com</td>
+          <td>
+            <button class="view-details">Xem chi tiết</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <link rel="stylesheet" href="./js/thu2.js" />
+  </body>
+</html>

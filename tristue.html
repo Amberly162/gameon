@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Trí Tuệ</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .header div {
+        text-align: center;
+      }
+
+      .header div img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .header div p {
+        margin: 5px 0 0;
+        font-size: 14px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+      }
+
+      .banner {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .banner img {
+        width: 600px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-card h3 {
+            font-size: 16px;
+            margin: 10px 0 5px;
+        }
+
+        .game-card p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .game-card .rating {
+            color: #f39c12;
+        }
+
+        .game-card .players {
+            font-size: 12px;
+            color: #999;
+        }
+     
+    </style>
+  </head>
+  <body>
+    <header>
+        <div class="container">
+          <div class="logo">
+            <h1><a href="index2.html">Gaon</a></h1>
+          </div>
+          <nav>
+            <ul class="navbar">
+              <li><a href="index2.html">Trang Chủ</a></li>
+              <li><a href="#category">Danh Mục Game</a></li>
+              <li><a href="#top">Game miễn phí </a></li>    
+              <li><a href="hotro.html">Liên Hệ </a></li>
+              <li><a href="gioithieuwweb.html">Giới thiệu web <a></li>
+              
+              
+            </ul>
+          </nav>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input
+                type="search"
+                class="form-control form-control-dark text-bg-dark"
+                placeholder="Search..."
+                aria-label="Search"
+              />
+            </form>
+      
+            <div class="text-end">
+              <a href="singandlogin.html" button="button" class="btn btn-outline-light me-2">Login</a>
+              <a href="pay.html" button type="button" class="btn btn-warning">Nạp crad</a>
+              <a href="giaodienuser.html" class="user-logo">
+                <img src="./img/user.svg" alt="User Profile" style="width: 40px; height: 40px; border-radius: 50%;" />
+              </a>
+          
+        </div>
+      </header>
+  <!---->
+  <nav class="mainnav clearfix"><div class="container" bis_skin_checked="1"><ul class="mainmenu"><li class="first"><a href="/" class="viewall" title="Danh mục game theo chủ đề">Danh mục</a></li>
+    <li><a href="/gamehay" title="Game hay nhất mọi thời đại">Game Hay</a></li>
+    <li><a href="/game-hot" title="Tuyển tập game hot">Game Hot</a></li>
+    <li><a href="/gamemoi" title="Game mới nhất trong 24h">Game Mới</a></li>
+    <li><a href="/game-y8/games" title="Game Y8">Game Y8</a></li>
+    <li><a href="/game-2-nguoi-choi/games" title="Game 2 người chơi">Game 2 người</a></li>
+    <li><a href="/game-tri-tue/games" title="Game Trí tuệ">Trí tuệ</a></li>
+    <li><a href="/quiz-trac-nghiem/games" title="Trắc nghiệm">Trắc nghiệm</a></li>
+    <li><a href="/game-van-phong/games" title="Game Văn phòng">Game Văn phòng</a></li>
+    <li><a href="/game-the-thao/games" title="Game Thể thao">Thể thao</a></li>
+  
+    <div class="header">
+      <div>
+        <img src="icon1.png" alt="Giải đố IQ" />
+        <p>Giải đố IQ</p>
+      </div>
+      <div>
+        <img src="icon2.png" alt="Toán học" />
+        <p>Toán học</p>
+      </div>
+      <div>
+        <img src="icon3.png" alt="Game Xếp hình" />
+        <p>Game Xếp hình</p>
+      </div>
+      <div>
+        <img src="icon4.png" alt="Học tập" />
+        <p>Học tập</p>
+      </div>
+      <div>
+        <img src="icon5.png" alt="Luyện trí nhớ" />
+        <p>Luyện trí nhớ</p>
+      </div>
+      <div>
+        <img src="icon6.png" alt="Học tiếng Anh" />
+        <p>Học tiếng Anh</p>
+      </div>
+    </div>
+
+    <div class="container">
+      
+      <div class="box bestbox" bis_skin_checked="1">
+        <h2><a class="heading" href="/game-hot"> Game trí tuệ </a></h2>
+        <div class="inside" bis_skin_checked="1">
+            <div class="banner">
+                <img src="./images/banner.jpg" alt="Tìm tiền giúp Tom" />
+                <img src="./images/download (2).jpg" alt="Sửa chữa đường sắt" />
+            </div>
+      
+        <div class="game-grid">
+         <div class="game-card">
+          <img src="game3.jpg" alt="Chú khỉ buồn: Tìm khỉ con 2" />
+          <h3>Chú khỉ buồn: Tìm khỉ con 2</h3>
+          <p class="players">1.330.959 người chơi</p>
+          <p class="rating">★★★★★</p>
+          <a href="#">Chơi ngay</a>
+        </div></div>
+        <div class="game-grid">
+            <div class="game-card">
+              <img src="game3.jpg" alt="Chú khỉ buồn: Tìm khỉ con 3" />
+              <h3>Chú khỉ buồn: Tìm khỉ con 3</h3>
+              <p class="players">1.330.959 người chơi</p>
+              <p class="rating">★★★★★</p>
+              <a href="#">Chơi ngay</a>
+            </div></div>
+        <div class="game-grid">
+        <div class="game-card">
+          <img src="game3.jpg" alt="Chú khỉ buồn: Tìm khỉ con 4" />
+          <h3>Chú khỉ buồn: Tìm khỉ con 4</h3>
+          <p class="players">1.330.959 người chơi</p>
+          <p class="rating">★★★★★</p>
+          <a href="#">Chơi ngay</a>
+        </div></div>
+        <div class="game-grid">
+        <div class="game-card">
+          <img src="game4.jpg" alt="Thời trang Võ Tắc Thiên" />
+          <h3>Thời trang Võ Tắc Thiên</h3>
+          <p class="players">1.199.552 người chơi</p>
+          <p class="rating">★★★★☆</p>
+          <a href="#">Chơi ngay</a>
+        </div></div>
+        <div class="game-grid">
+        <div class="game-card">
+          <img src="game5.jpg" alt="Chú khỉ buồn 20: Siêu tốc 4" />
+          <h3>Chú khỉ buồn 20: Siêu tốc 4</h3>
+          <p class="players">1.088.162 người chơi</p>
+          <p class="rating">★★★★☆</p>
+          <a href="#">Chơi ngay</a>
+        </div></div>
+        <div class="game-grid">
+        <div class="game-card">
+          <img src="game6.jpg" alt="Chú khỉ buồn 11: Thang" />
+          <h3>Chú khỉ buồn 11: Thang</h3>
+          <p class="players">1.251.276 người chơi</p>
+          <p class="rating">★★★★★</p>
+          <a href="#">Chơi ngay</a>
+        </div></div>
+      </d>
+    </div>
+  </body>
+</html>

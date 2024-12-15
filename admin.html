@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      .header {
+        background-color: #333;
+        color: #fff;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+      }
+
+      .sidebar {
+        width: 250px;
+        background: #444;
+        color: white;
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+        padding: 20px 0;
+      }
+
+      .sidebar a {
+        color: white;
+        padding: 10px 20px;
+        display: block;
+        text-decoration: none;
+      }
+
+      .sidebar a:hover {
+        background: #575757;
+      }
+
+      .content {
+        margin-left: 260px;
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .btn {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+
+      /* Notification styles */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4caf50;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: none;
+        z-index: 1000;
+      }
+
+      .notification.error {
+        background: #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <h1>Admin Dashboard</h1>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <a href="#" onclick="showPage('customers')">Quản lý khách hàng</a>
+      <a href="#" onclick="showPage('feedback')">Xem phản hồi người chơi</a>
+      <a href="#" onclick="showPage('manageUsers')">Thêm/Sửa/Xóa người dùng</a>
+      <a href="#" onclick="showPage('reports')">Xem báo cáo bán game</a>
+      <a href="#" onclick="showPage('updateCategories')">Cập nhật danh mục</a>
+      <a href="#" onclick="showPage('newGames')">Cập nhật game mới</a>
+      <a href="#" onclick="showPage('orders')">Quản lý đơn hàng</a>
+      <a href="#" onclick="showPage('confirmOrders')">Xác nhận mua game</a>
+      <a href="#" onclick="showPage('traffic')">Thống kê lượt truy cập</a>
+      <a href="#" onclick="showPage('sales')">Thống kê doanh số</a>
+      <a href="#" onclick="logout()">Đăng xuất</a>
+    </div>
+    <!-- Content -->
+    <div class="content">
+      <div class="card" id="customers">
+        <h2>Quản lý khách hàng</h2>
+        <table id="customer-info">
+          <thead>
+            <tr>
+              <th>Mã khách hàng</th>
+              <th>Tên</th>
+              <th>Email</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#001</td>
+              <td>Nguyễn Văn A</td>
+              <td>a.nguyen@gmail.com</td>
+              <td>
+                <button class="view-details">Xem chi tiết</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="btn" onclick="notify('Đã thêm khách hàng thành công!')">
+          Thêm khách hàng
+        </button>
+      </div>
+
+      <div class="card hidden" id="feedback">
+        <h2>Xem phản hồi người chơi</h2>
+        <button class="btn" onclick="notify('Đã tải phản hồi người chơi!')">
+          <table id="feedback-management">
+            <thead>
+              <tr>
+                <th>ID Phản hồi</th>
+                <th>Khách hàng</th>
+                <th>Nội dung</th>
+                <th>Thời gian</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#001</td>
+                <td>Nguyễn Văn A</td>
+                <td>Game rất thú vị!</td>
+                <td>2024-12-01</td>
+                <td>
+                  <button class="reply">Trả lời</button>
+                  <button class="delete-feedback">Xóa</button>
+                </td>
+              </tr>
+              <tr>
+                <td>#002</td>
+                <td>Trần Thị B</td>
+                <td>Giá hơi cao, nhưng đáng mua.</td>
+                <td>2024-12-02</td>
+                <td>
+                  <button class="reply">Trả lời</button>
+                  <button class="delete-feedback">Xóa</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          Tải phản hồi
+        </button>
+      </div>
+
+      <div class="card hidden" id="manageUsers">
+        <h2>Thêm/Sửa/Xóa người dùng</h2> <table id="user-management">
+          <thead>
+            <tr>
+              <th>Mã người dùng</th>
+              <th>Tên</th>
+              <th>Email</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#001</td>
+              <td>Nguyễn Văn A</td>
+              <td>a.nguyen@gmail.com</td>
+              <td>
+                <button class="edit-user">Sửa</button>
+                <button class="delete-user">Xóa</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#002</td>
+              <td>Trần Thị B</td>
+              <td>b.tran@gmail.com</td>
+              <td>
+                <button class="edit-user">Sửa</button>
+                <button class="delete-user">Xóa</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button
+          class="btn"
+          onclick="notify('Người dùng đã được thêm thành công!')"
+        >
+          Thêm người dùng
+        </button>
+        <button class="btn" onclick="notify('Người dùng đã bị xóa!', 'error')">
+          Xóa người dùng
+        </button>
+      </div>
+
+      <div class="card hidden" id="reports">
+        <h2>Xem báo cáo bán game</h2>
+        <ul id="system-notifications">
+          <li class="new">
+            <strong>Khuyến mãi:</strong> Giảm giá 50% tất cả các game nhân dịp lễ!
+          </li>
+          <li>
+            <strong>Bảo trì:</strong> Hệ thống sẽ bảo trì từ 12:00 đến 14:00 ngày
+            mai.
+          </li>
+        </ul>
+        <button class="btn" onclick="notify('Báo cáo đã được tải thành công!')">
+          Tải báo cáo
+        </button>
+      </div>
+
+      <div class="card hidden" id="updateCategories">
+        <h2>Cập nhật danh mục</h2>
+        <table id="category-management">
+          <thead>
+            <tr>
+              <th>Mã danh mục</th>
+              <th>Tên danh mục</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#001</td>
+              <td>Game nhập vai</td>
+              <td>
+                <button class="edit-category">Chỉnh sửa</button>
+                <button class="delete-category">Xóa</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#002</td>
+              <td>Game bắn súng</td>
+              <td>
+                <button class="edit-category">Chỉnh sửa</button>
+                <button class="delete-category">Xóa</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn" onclick="notify('Danh mục đã được cập nhật!')">
+          Cập nhật danh mục
+        </button>
+      </div>
+
+      <div class="card hidden" id="newGames">
+        <h2>Cập nhật game mới</h2>
+      </table>
+      <form id="add-game-form">
+        <label for="game-name">Tên game:</label>
+        <input type="text" id="game-name" placeholder="Nhập tên game" />
+  
+        <label for="game-description">Mô tả:</label>
+        <textarea
+          id="game-description"
+          placeholder="Nhập mô tả về game"
+        ></textarea>
+  
+        <label for="game-price">Giá:</label>
+        <input type="number" id="game-price" placeholder="Nhập giá" />
+  
+        <label for="game-image">Hình ảnh:</label>
+        <input type="file" id="game-image" />
+  
+        <button type="submit">Thêm game</button>
+      </form>
+        <button
+          class="btn"
+          onclick="notify('Game mới đã được thêm thành công!')"
+        >
+          Thêm game mới
+        </button>
+      </div>
+
+      <div class="card hidden" id="orders">
+        <h2>Quản lý đơn hàng</h2>
+        <table id="order-management">
+          <thead>
+            <tr>
+              <th>Mã đơn hàng</th>
+              <th>Khách hàng</th>
+              <th>Ngày đặt</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#001</td>
+              <td>Nguyễn Văn A</td>
+              <td>2024-12-01</td>
+              <td>Đang xử lý</td>
+              <td class="action-buttons">
+                <button class="approve">Xác nhận</button>
+                <button class="cancel">Hủy</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#002</td>
+              <td>Trần Thị B</td>
+              <td>2024-12-02</td>
+              <td>Đã giao</td>
+              <td class="action-buttons">
+                <button class="approve" disabled>Hoàn tất</button>
+                <button class="cancel">Hủy</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn" onclick="notify('Danh sách đơn hàng đã được tải!')">
+          Tải đơn hàng
+        </button>
+      </div>
+
+      <div class="card hidden" id="confirmOrders">
+        <h2>Xác nhận mua game</h2>
+        <button class="btn" onclick="notify('Đơn hàng đã được xác nhận!')">
+          Xác nhận đơn hàng
+        </button>
+      </div>
+
+      <div class="card hidden" id="traffic">
+        <h2>Thống kê lượt truy cập</h2>
+        <button class="btn" onclick="notify('Lượt truy cập đã được thống kê!')">
+          Xem thống kê
+        </button>
+      </div>
+
+      <div class="card hidden" id="sales">
+        <h2>Thống kê doanh số</h2>
+        <div id="sales-report">
+        
+          <div id="sales-chart">
+            <!-- Khu vực biểu đồ -->
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Tháng</th>
+                <th>Doanh thu</th>
+                <th>Số game bán</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tháng 11</td>
+                <td>50,000,000 VND</td>
+                <td>120</td>
+              </tr>
+              <tr>
+                <td>Tháng 12</td>
+                <td>75,000,000 VND</td>
+                <td>180</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="btn" onclick="notify('Doanh số đã được thống kê!')">
+          Xem doanh số
+        </button>
+      </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+      function showPage(pageId) {
+        const pages = document.querySelectorAll(".card");
+        pages.forEach((page) => page.classList.add("hidden"));
+        document.getElementById(pageId).classList.remove("hidden");
+      }
+
+      function notify(message, type = "success") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.style.display = "block";
+
+        setTimeout(() => {
+          notification.style.display = "none";
+        }, 3000);
+      }
+
+      function logout() {
+        notify("Bạn đã đăng xuất!", "error");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Xếp Hình</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+      }
+      #game-board {
+        position: relative;
+        width: 200px;
+        height: 400px;
+        border: 2px solid #333;
+        background-color: #fff;
+        overflow: hidden;
+      }
+      .block {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: #3498db;
+      }
+      #score {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-board"></div>
+    <div id="score">Điểm: 0</div>
+
+    <script>
+      const board = document.getElementById("game-board");
+      const scoreDisplay = document.getElementById("score");
+      const blockSize = 40;
+      const boardWidth = 5; // 5 cột
+      const boardHeight = 10; // 10 hàng
+      let score = 0;
+      let currentBlock = null;
+      let gameInterval;
+
+      // Các hình dạng khối
+      const shapes = [
+        [
+          [1, 1, 1],
+          [0, 1, 0],
+        ], // Hình chữ T
+        [
+          [1, 1],
+          [1, 1],
+        ], // Hình vuông
+        [
+          [1, 1, 0],
+          [0, 1, 1],
+        ], // Hình chữ Z
+        [
+          [0, 1, 1],
+          [1, 1, 0],
+        ], // Hình chữ S
+        [[1, 1, 1, 1]], // Hình chữ I
+        [
+          [1, 1, 1],
+          [1, 0, 0],
+        ], // Hình chữ L
+        [
+          [0, 0, 1],
+          [1, 1, 1],
+        ], // Hình chữ J
+      ];
+
+      // Tạo khối gạch mới
+      function createBlock() {
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const block = {
+          x: Math.floor(boardWidth / 2) - Math.floor(shape[0].length / 2),
+          y: 0,
+          shape: shape,
+          element: null,
+        };
+        drawBlock(block);
+        return block;
+      }
+
+      // Vẽ khối gạch trên bảng
+      function drawBlock(block) {
+        if (block.element) {
+          block.element.remove();
+        }
+        block.element = document.createElement("div");
+        block.element.className = "block";
+        block.element.style.backgroundColor = "#3498db";
+        block.element.style.top = `${block.y * blockSize}px`;
+        block.element.style.left = `${block.x * blockSize}px`;
+        block.element.style.width = `${block.shape[0].length * blockSize}px`;
+        block.element.style.height = `${block.shape.length * blockSize}px`;
+        board.appendChild(block.element);
+      }
+
+      // Di chuyển khối gạch xuống
+      function moveDown() {
+        if (!canMove(currentBlock, 0, 1)) {
+          placeBlock();
+          return;
+        }
+        currentBlock.y++;
+        drawBlock(currentBlock);
+      }
+
+      // Kiểm tra xem khối có thể di chuyển hay không
+      function canMove(block, dx, dy) {
+        for (let row = 0; row < block.shape.length; row++) {
+          for (let col = 0; col < block.shape[row].length; col++) {
+            if (block.shape[row][col] === 1) {
+              const newX = block.x + col + dx;
+              const newY = block.y + row + dy;
+              if (newX < 0 || newX >= boardWidth || newY >= boardHeight) {
+                return false; // Ra ngoài biên
+              }
+              const existingBlock = document.elementFromPoint(
+                newX * blockSize + blockSize / 2,
+                newY * blockSize + blockSize / 2
+              );
+              if (existingBlock && existingBlock.className === "block") {
+                return false; // Đụng vào khối khác
+              }
+            }
+          }
+        }
+        return true;
+      }
+
+      // Đặt khối gạch vào vị trí cố định
+      function placeBlock() {
+        score += 10;
+        scoreDisplay.textContent = "Điểm: " + score;
+        currentBlock = createBlock();
+      }
+
+      // Điều khiển khối gạch
+      function control(event) {
+        if (event.key === "ArrowLeft" && canMove(currentBlock, -1, 0)) {
+          currentBlock.x--;
+        } else if (event.key === "ArrowRight" && canMove(currentBlock, 1, 0)) {
+          currentBlock.x++;
+        } else if (event.key === "ArrowDown") {
+          moveDown();
+        } else if (event.key === "ArrowUp") {
+          rotateBlock();
+        }
+        drawBlock(currentBlock);
+      }
+
+      // Xoay khối gạch
+      function rotateBlock() {
+        const newShape = currentBlock.shape[0].map((val, index) =>
+          currentBlock.shape.map((row) => row[index]).reverse()
+        );
+
+        const originalShape = currentBlock.shape;
+        currentBlock.shape = newShape;
+
+        if (!canMove(currentBlock, 0, 0)) {
+          currentBlock.shape = originalShape; // Quay lại nếu không hợp lệ
+        }
+      }
+
+      // Bắt đầu trò chơi
+      function startGame() {
+        currentBlock = createBlock();
+        gameInterval = setInterval(moveDown, 1000);
+        window.addEventListener("keydown", control);
+      }
+
+      startGame();
+    </script>
+  </body>
+</html>

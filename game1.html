@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Di Chuyển</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <header>
+      <div class="container">
+        <div class="logo">
+          <h1><a href="index2.html">Game24h Clone</a></h1>
+        </div>
+        <nav>
+          <ul class="navbar">
+            <li><a href="index2.html">Trang Chủ</a></li>
+            <li><a href="#category">Danh Mục Game</a></li>
+            <li><a href="#top">Game Hay</a></li>
+            <li><a href="#contact">Liên Hệ</a></li>
+          </ul>
+        </nav>
+        <div class="search-bar">
+          <input type="text" placeholder="Tìm kiếm game..." id="search-input" />
+          <button id="search-btn">Tìm</button>
+        </div>
+      </div>
+    </header>
+    <style>
+      body {
+        margin: auto;
+        padding: 10;
+        overflow: hidden;
+        background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+      }
+      #gameCanvas {
+        background-color: #282c34;
+        display: block;
+        margin: 0 auto;
+      }
+      #gameOver {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2em;
+        color: red;
+        display: none;
+      }
+      #restartButton {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.5em;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+      }
+      #restartButton:hover {
+        background-color: #45a049;
+      }
+      #instructions {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.2em;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        display: block;
+      }
+      #pauseButton {
+        position: absolute;
+        top: 10%;
+        right: 10%;
+        padding: 10px 20px;
+        background-color: #ff9800;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #pauseButton:hover {
+        background-color: #ff7043;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="gameOver">Game Over!</div>
+    <button id="restartButton" onclick="restartGame()">Chơi lại</button>
+    <div id="instructions">
+      <h3>Cách chơi:</h3>
+      <ul>
+        <li>Di chuyển nhân vật bằng các phím mũi tên trái và phải.</li>
+        <li>
+          Tránh các vật thể rơi xuống. Các vật thể sẽ rơi ít hơn và sẽ tạo ra
+          nhiều lối đi rộng hơn cho người chơi.
+        </li>
+        <li>
+          Trò chơi sẽ khó dần theo thời gian vì tốc độ của vật thể sẽ tăng lên
+          mỗi khi người chơi đạt được 5 điểm.
+        </li>
+      </ul>
+    </div>
+    <button id="pauseButton" onclick="togglePause()">Tạm dừng</button>
+
+    <audio
+      id="jumpSound"
+      src="./AUDIO/When_The_Sun_Goes_Down_(Instrumental)_-_the.madpix.project.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="gameOverSound"
+      src="./AUDIO/When_The_Sun_Goes_Down_(Instrumental)_-_the.madpix.project.mp3"
+      preload="auto"
+    ></audio>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const gameOverDiv = document.getElementById("gameOver");
+      const restartButton = document.getElementById("restartButton");
+      const instructionsDiv = document.getElementById("instructions");
+      const playerWidth = 30,
+        playerHeight = 30; // Nhỏ hơn nhân vật
+      const objectWidth = 30,
+        objectHeight = 30;
+
+      let playerX,
+        playerY,
+        playerSpeed,
+        objects,
+        score,
+        gameOver,
+        objectSpeed,
+        isPaused;
+
+      function initGame() {
+        playerX = canvas.width / 2 - playerWidth / 2;
+        playerY = canvas.height - playerHeight - 10;
+        playerSpeed = 15;
+        objects = [];
+        score = 0;
+        gameOver = false;
+        objectSpeed = 2;
+        isPaused = false;
+
+        gameOverDiv.style.display = "none";
+        restartButton.style.display = "none";
+        instructionsDiv.style.display = "block"; // Show instructions at the start
+      }
+
+      // Listen for click event to start the game
+      canvas.addEventListener("click", startGame);
+
+      function startGame() {
+        if (!gameOver) {
+          instructionsDiv.style.display = "none"; // Hide instructions when clicked
+          gameLoop(); // Start the game loop
+        }
+      }
+
+      document.addEventListener("keydown", movePlayer);
+
+      function movePlayer(e) {
+        if (gameOver || isPaused) return;
+
+        if (e.key === "ArrowLeft" && playerX > 0) {
+          playerX -= playerSpeed;
+        }
+        if (e.key === "ArrowRight" && playerX < canvas.width - playerWidth) {
+          playerX += playerSpeed;
+        }
+      }
+
+      function jump() {
+        if (gameOver || isPaused) return;
+
+        if (playerY === canvas.height - playerHeight - 10) {
+          // Only jump if the player is on the ground
+          playerY -= 80; // Jump height
+          jumpSound.play(); // Play jump sound
+          setTimeout(() => {
+            playerY += 80; // Gravity pulling down
+          }, 300);
+        }
+      }
+
+      function generateObject() {
+        if (isPaused) return;
+        const randomChance = Math.random();
+        let x;
+        // Thay đổi tỷ lệ để các vật thể xuất hiện ít hơn và có khoảng trống lớn hơn
+        if (Math.random() > 0.75) {
+          // Chỉ 25% tạo ra vật thể
+          // Tạo vật thể trong các khu vực cụ thể để chừa đường đi rộng cho người chơi
+          if (Math.random() > 0.3) {
+            x = Math.random() * (canvas.width / 3); // Lối đi trái
+          } else if (Math.random() > 0.2) {
+            x = Math.random() * (canvas.width / 3) + (canvas.width / 3) * 2; // Lối đi phải
+          } else {
+            x = Math.random() * (canvas.width / 3) + canvas.width / 3; // Lối đi giữa
+          }
+          const y = -objectHeight;
+          objects.push({ x, y });
+        }
+      }
+
+      function moveObjects() {
+        if (isPaused) return;
+
+        for (let i = 0; i < objects.length; i++) {
+          objects[i].y += objectSpeed;
+          if (objects[i].y > canvas.height) {
+            objects.splice(i, 1);
+            score++;
+            if (score % 2 === 0) {
+              objectSpeed += 0.009; // Increase speed every 5 points
+            }
+          }
+        }
+      }
+
+      function detectCollision() {
+        if (isPaused) return;
+
+        for (let i = 0; i < objects.length; i++) {
+          if (
+            objects[i].y + objectHeight > playerY &&
+            objects[i].y < playerY + playerHeight &&
+            objects[i].x + objectWidth > playerX &&
+            objects[i].x < playerX + playerWidth
+          ) {
+            gameOver = true;
+            gameOverDiv.style.display = "block";
+            restartButton.style.display = "block";
+            gameOverSound.play(); // Play game over sound
+          }
+        }
+      }
+
+      function draw() {
+        if (gameOver || isPaused) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00FF00";
+        ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+
+        ctx.fillStyle = "#FF0000";
+        for (let i = 0; i < objects.length; i++) {
+          ctx.fillRect(objects[i].x, objects[i].y, objectWidth, objectHeight);
+        }
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "20px Arial";
+        ctx.fillText("Điểm: " + score, 10, 30);
+      }
+
+      function gameLoop() {
+        if (gameOver) return;
+
+        generateObject();
+        moveObjects();
+        detectCollision();
+        draw();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      function restartGame() {
+        initGame();
+        gameLoop(); // Start the game loop again after restart
+      }
+
+      function togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+          pauseButton.textContent = "Tiếp tục"; // Change button text to "Continue"
+        } else {
+          pauseButton.textContent = "Tạm dừng"; // Change button text to "Pause"
+          gameLoop();
+        }
+      }
+
+      initGame();
+      gameLoop();
+    </script>
+  </body>
+</html>

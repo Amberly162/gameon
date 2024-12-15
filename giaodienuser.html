@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Online Dashboard</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+      body,
+      h1,
+      h2,
+      p,
+      ul,
+      li,
+      a {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        box-sizing: border-box;
+        text-decoration: none;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .header {
+        background: #4caf50;
+        color: white;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .sidebar {
+        width: 250px;
+        background: #333;
+        color: white;
+        position: fixed;
+        height: 100%;
+        padding: 20px 10px;
+      }
+
+      .sidebar ul li {
+        margin: 15px 0;
+      }
+
+      .sidebar ul li a {
+        color: white;
+        padding: 10px;
+        display: block;
+        border-radius: 5px;
+      }
+
+      .sidebar ul li a:hover {
+        background: #575757;
+      }
+
+      .content {
+        margin-left: 270px;
+        padding: 20px;
+      }
+
+      .card {
+        background: white;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h2 {
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        background: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        background: #45a049;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo">
+          <h1><a href="index2.html">Gaon</a></h1>
+        </div>
+        <nav>
+          <ul class="navbar">
+            <li><a href="index2.html">Trang Chủ</a></li>
+            <li><a href="#category">Danh Mục Game</a></li>
+            <li><a href="#top">Game miễn phí </a></li>    
+            <li><a href="hotro.html">Liên Hệ </a></li>
+            <li><a href="#category">Giới thiệu web <a></li>
+            
+            
+          </ul>
+        </nav>
+          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input
+              type="search"
+              class="form-control form-control-dark text-bg-dark"
+              placeholder="Search..."
+              aria-label="Search"
+            />
+          </form>
+    
+          <div class="text-end">
+            <a href="singandlogin.html" button="button" class="btn btn-outline-light me-2">Login</a>
+            <a href="pay.html" button type="button" class="btn btn-warning">Nạp crad</a>
+            <a href="giaodienuser.html" class="user-logo">
+              <img src="./img/user.svg" alt="User Profile" style="width: 40px; height: 40px; border-radius: 50%;" />
+            </a>
+        
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <ul>
+        <li>
+          <a href="#" onclick="showPage('profile')">Thông tin người chơi</a>
+        </li>
+        <li><a href="#" onclick="showPage('history')">Lịch sử chơi</a></li>
+        <li>
+          <a href="#" onclick="showPage('transactions')">Lịch sử giao dịch</a>
+        </li>
+        <li><a href="#" onclick="showPage('password')">Đổi mật khẩu</a></li>
+        <li>
+          <a href="#" onclick="showPage('favorites')"
+            >Danh sách game yêu thích</a
+          >
+        </li>
+        <li><a href="#" onclick="logout()">Đăng xuất</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Profile Page -->
+      <div class="card" id="profile">
+        <h2>Thông tin người chơi</h2>
+        <form id="profileForm">
+          <label for="name">Tên:</label><br />
+          <input type="text" id="name" value="Nguyễn Văn A" /><br /><br />
+          <label for="email">Email:</label><br />
+          <input
+            type="email"
+            id="email"
+            value="nguyenvana@example.com"
+          /><br /><br />
+          <label for="rank">Hạng:</label><br />
+          <input type="text" id="rank" value="Vàng" /><br /><br />
+          <button type="button" class="btn" onclick="saveProfile()">Lưu</button>
+        </form>
+      </div>
+
+      <!-- Play History Page -->
+      <div class="card hidden" id="history">
+        <h2>Lịch sử chơi</h2>
+        <ul>
+          <li>Game 1 - Thắng - 10/12/2024</li>
+          <li>Game 2 - Thua - 09/12/2024</li>
+          <li>Game 3 - Thắng - 08/12/2024</li>
+        </ul>
+      </div>
+
+      <!-- Transaction History Page -->
+      <div class="card hidden" id="transactions">
+        <h2>Lịch sử giao dịch</h2>
+        <ul>
+          <li>Nạp 500.000 VND - 07/12/2024</li>
+          <li>Rút 300.000 VND - 06/12/2024</li>
+        </ul>
+      </div>
+
+      <!-- Change Password Page -->
+      <div class="card hidden" id="password">
+        <h2>Đổi mật khẩu</h2>
+        <form>
+          <label for="old-password">Mật khẩu cũ:</label><br />
+          <input type="password" id="old-password" required /><br /><br />
+          <label for="new-password">Mật khẩu mới:</label><br />
+          <input type="password" id="new-password" required /><br /><br />
+          <button type="button" class="btn" onclick="changePassword()">
+            Đổi mật khẩu
+          </button>
+        </form>
+      </div>
+
+      <!-- Favorites Page -->
+      <div class="card hidden" id="favorites">
+        <h2>Danh sách game yêu thích</h2>
+        <ul>
+          <li>Game 1</li>
+          <li>Game 2</li>
+          <li>Game 3</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      function showPage(pageId) {
+        // Ẩn tất cả các trang
+        const pages = document.querySelectorAll(".card");
+        pages.forEach((page) => page.classList.add("hidden"));
+
+        // Hiển thị trang được chọn
+        document.getElementById(pageId).classList.remove("hidden");
+      }
+
+      function saveProfile() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const rank = document.getElementById("rank").value;
+        alert(
+          `Thông tin đã được lưu!\nTên: ${name}\nEmail: ${email}\nHạng: ${rank}`
+        );
+      }
+
+      function changePassword() {
+        alert("Mật khẩu đã được thay đổi!");
+      }
+
+      function logout() {
+        alert("Bạn đã đăng xuất!");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Game Support</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .header {
+        background-color: #4caf50;
+        color: white;
+        padding: 15px;
+        text-align: center;
+      }
+      .form-group {
+        padding: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      .form-group button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .form-group button:hover {
+        background-color: #45a049;
+      }
+      .response {
+        display: none;
+        padding: 15px;
+        background-color: #dff0d8;
+        color: #3c763d;
+        margin: 15px;
+        border: 1px solid #d6e9c6;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    
+      </div>
+      <div class="response" id="response">
+        Your request has been submitted successfully. We will get back to you
+        shortly.
+      </div>
+
+      <div class="form-group">
+        <h2>Add a New Game</h2>
+
+        <label for="gameName">Game Name:</label>
+        <input
+          type="text"
+          id="gameName"
+          placeholder="Enter the game name"
+          required
+        />
+
+        <label for="gameGenre">Genre:</label>
+        <input
+          type="text"
+          id="gameGenre"
+          placeholder="Enter the game genre"
+          required
+        />
+
+        <label for="gameDescription">Description:</label>
+        <textarea
+          id="gameDescription"
+          rows="5"
+          placeholder="Enter a brief description of the game"
+        ></textarea>
+
+        <label for="gameInstructions">Instructions:</label>
+        <textarea
+          id="gameInstructions"
+          rows="5"
+          placeholder="Enter how to play the game"
+        ></textarea>
+
+        <button id="addGame">Add Game</button>
+      </div>
+      <div class="response" id="gameResponse">
+        The game has been added successfully.
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("submit").addEventListener("click", function () {
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const issue = document.getElementById("issue").value;
+        const details = document.getElementById("details").value.trim();
+
+        if (!name || !email || !details) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+
+        const request = {
+          name: name,
+          email: email,
+          issue: issue,
+          details: details,
+        };
+
+        console.log("Request Data:", request);
+
+        document.getElementById("response").style.display = "block";
+
+        setTimeout(() => {
+          document.getElementById("response").style.display = "none";
+          document.getElementById("name").value = "";
+          document.getElementById("email").value = "";
+          document.getElementById("issue").value = "login";
+          document.getElementById("details").value = "";
+        }, 3000);
+      });
+
+      document.getElementById("addGame").addEventListener("click", function () {
+        const gameName = document.getElementById("gameName").value.trim();
+        const gameGenre = document.getElementById("gameGenre").value.trim();
+        const gameDescription = document
+          .getElementById("gameDescription")
+          .value.trim();
+        const gameInstructions = document
+          .getElementById("gameInstructions")
+          .value.trim();
+
+        if (!gameName || !gameGenre || !gameDescription || !gameInstructions) {
+          alert("Please fill in all required fields for the game.");
+          return;
+        }
+
+        const newGame = {
+          name: gameName,
+          genre: gameGenre,
+          description: gameDescription,
+          instructions: gameInstructions,
+        };
+
+        console.log("New Game Data:", newGame);
+
+        document.getElementById("gameResponse").style.display = "block";
+
+        setTimeout(() => {
+          document.getElementById("gameResponse").style.display = "none";
+          document.getElementById("gameName").value = "";
+          document.getElementById("gameGenre").value = "";
+          document.getElementById("gameDescription").value = "";
+          document.getElementById("gameInstructions").value = "";
+        }, 3000);
+      });
+    </script>
+  </body>
+</html>

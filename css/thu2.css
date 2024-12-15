@@ -1,0 +1,379 @@
+.confirmation {
+  text-align: center;
+  margin: 50px;
+}
+.confirmation h2 {
+  color: #28a745;
+}
+div {
+  margin: 20px auto;
+  max-width: 400px;
+  text-align: center;
+}
+textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+select,
+button {
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+button {
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+}
+button:hover {
+  background-color: #0056b3;
+}
+#user-profile {
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+#user-profile input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#user-profile button {
+  padding: 10px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#user-profile button:hover {
+  background-color: #117a8b;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #c82333;
+}
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #e0a800;
+}
+#transaction-history {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+#transaction-history th,
+#transaction-history td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+#transaction-history th {
+  background-color: #f4f4f4;
+  color: black;
+}
+#support-form {
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0056b3;
+}
+#order-management {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+#order-management th,
+#order-management td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+#order-management th {
+  background-color: #f8f9fa;
+  color: #333;
+}
+.action-buttons button {
+  padding: 5px 10px;
+  margin: 2px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.action-buttons .approve {
+  background-color: #28a745;
+  color: white;
+}
+.action-buttons .approve:hover {
+  background-color: #218838;
+}
+.action-buttons .cancel {
+  background-color: #dc3545;
+  color: white;
+}
+.action-buttons .cancel:hover {
+  background-color: #c82333;
+}
+#add-game-form {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+#add-game-form input,
+#add-game-form textarea {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#add-game-form button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#add-game-form button:hover {
+  background-color: #0056b3;
+}
+#category-management {
+  width: 80%;
+  margin: auto;
+  border-collapse: collapse;
+}
+#category-management th,
+#category-management td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+#category-management th {
+  background-color: #343a40;
+  color: white;
+}
+button.edit-category {
+  background-color: #ffc107;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+button.edit-category:hover {
+  background-color: #e0a800;
+}
+button.delete-category {
+  background-color: #dc3545;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+button.delete-category:hover {
+  background-color: #c82333;
+}
+#sales-report {
+  width: 90%;
+  margin: 20px auto;
+}
+#sales-chart {
+  width: 100%;
+  height: 400px;
+  margin: 20px 0;
+}
+#feedback-management {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+}
+#feedback-management th,
+#feedback-management td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+#feedback-management th {
+  background-color: #007bff;
+  color: white;
+}
+button.reply {
+  padding: 5px 10px;
+  background-color: #17a2b8;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+button.reply:hover {
+  background-color: #117a8b;
+}
+#user-management {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+}
+#user-management th,
+#user-management td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+button.add-user {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button.add-user:hover {
+  background-color: #218838;
+}
+button.edit-user,
+button.delete-user {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button.edit-user {
+  background-color: #ffc107;
+  color: black;
+}
+button.edit-user:hover {
+  background-color: #e0a800;
+}
+button.delete-user {
+  background-color: #dc3545;
+  color: white;
+}
+button.delete-user:hover {
+  background-color: #c82333;
+}
+#system-notifications {
+  width: 80%;
+  margin: auto;
+  list-style-type: none;
+  padding: 0;
+}
+#system-notifications li {
+  margin: 10px 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}
+#system-notifications li.new {
+  border-left: 5px solid #007bff;
+}
+#contact-support {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #218838;
+}
+button.logout {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button.logout:hover {
+  background-color: #c82333;
+}
+#customer-info {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+#customer-info th,
+#customer-info td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+#customer-info th {
+  background-color: #343a40;                     
+  color: white;
+}
+button.view-details {
+  padding: 5px 10px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+button.view-details:hover {
+  background-color: #0056b3;
+}

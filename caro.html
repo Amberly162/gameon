@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cờ Caro</title>
+    <style>
+      /* CSS - Thiết kế bảng cờ */
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f0f0f0;
+      }
+
+      h1 {
+        margin-top: 20px;
+      }
+
+      #game {
+        margin: 20px auto;
+        display: inline-block;
+        text-align: center;
+      }
+
+      #board {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+        gap: 5px;
+      }
+
+      .cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
+        border: 1px solid #000;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        height: 100px;
+        width: 100px;
+      }
+
+      .cell.taken {
+        cursor: not-allowed;
+      }
+
+      #status {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      #reset,
+      #mode-switch {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #controls {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cờ Caro</h1>
+    <div id="controls">
+      <button id="mode-switch">Chế độ: 2 Người Chơi</button>
+      <button id="reset">Chơi lại</button>
+    </div>
+    <div id="game">
+      <div id="board"></div>
+      <div id="status"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const boardElement = document.getElementById("board");
+        const statusElement = document.getElementById("status");
+        const resetButton = document.getElementById("reset");
+        const modeSwitchButton = document.getElementById("mode-switch");
+
+        const boardSize = 3;
+        let board = Array(boardSize)
+          .fill(null)
+          .map(() => Array(boardSize).fill(""));
+        let currentPlayer = "X";
+        let gameActive = true;
+        let singlePlayerMode = false; // Mặc định là 2 người chơi
+
+        // Tạo bảng cờ
+        function createBoard() {
+          boardElement.innerHTML = "";
+          board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+              const cellElement = document.createElement("div");
+              cellElement.classList.add("cell");
+              cellElement.dataset.row = rowIndex;
+              cellElement.dataset.col = colIndex;
+              cellElement.addEventListener("click", handleCellClick);
+              boardElement.appendChild(cellElement);
+            });
+          });
+        }
+
+        // Kiểm tra thắng
+        function checkWinner() {
+          // Kiểm tra hàng ngang, hàng dọc
+          for (let i = 0; i < boardSize; i++) {
+            if (board[i].every((cell) => cell === currentPlayer)) return true; // Hàng ngang
+            if (board.every((row) => row[i] === currentPlayer)) return true; // Hàng dọc
+          }
+          // Kiểm tra đường chéo
+          if (board.every((row, idx) => row[idx] === currentPlayer))
+            return true;
+          if (
+            board.every(
+              (row, idx) => row[boardSize - 1 - idx] === currentPlayer
+            )
+          )
+            return true;
+
+          return false;
+        }
+
+        // Kiểm tra hòa
+        function checkDraw() {
+          return board.flat().every((cell) => cell !== "");
+        }
+
+        // Xử lý khi người chơi click vào ô
+        function handleCellClick(event) {
+          if (!gameActive) return;
+
+          const row = event.target.dataset.row;
+          const col = event.target.dataset.col;
+
+          // Kiểm tra ô đã được đánh hay chưa
+          if (board[row][col] !== "") return;
+
+          // Đánh dấu lượt chơi
+          board[row][col] = currentPlayer;
+          event.target.textContent = currentPlayer;
+          event.target.classList.add("taken");
+
+          // Kiểm tra kết quả
+          if (checkWinner()) {
+            statusElement.textContent = `Người chơi ${currentPlayer} thắng! 🎉`;
+            gameActive = false;
+          } else if (checkDraw()) {
+            statusElement.textContent = "Hòa! 😐";
+            gameActive = false;
+          } else {
+            // Chuyển lượt hoặc để máy chơi
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            statusElement.textContent = `Đến lượt người chơi ${currentPlayer}`;
+            if (singlePlayerMode && currentPlayer === "O") {
+              setTimeout(computerPlay, 500); // Máy tự động chơi sau 0.5 giây
+            }
+          }
+        }
+
+        // Máy thực hiện nước đi
+        function computerPlay() {
+          if (!gameActive) return;
+
+          // Tìm nước đi để chặn người chơi hoặc tự thắng
+          let bestMove = findBestMove();
+          if (!bestMove) {
+            // Nếu không có nước đi tối ưu, đánh ngẫu nhiên
+            const emptyCells = [];
+            board.forEach((row, rowIndex) => {
+              row.forEach((cell, colIndex) => {
+                if (cell === "")
+                  emptyCells.push({ row: rowIndex, col: colIndex });
+              });
+            });
+            bestMove =
+              emptyCells[Math.floor(Math.random() * emptyCells.length)];
+          }
+
+          const { row, col } = bestMove;
+          const cellElement = boardElement.querySelector(
+            `[data-row='${row}'][data-col='${col}']`
+          );
+          board[row][col] = currentPlayer;
+          cellElement.textContent = currentPlayer;
+          cellElement.classList.add("taken");
+
+          // Kiểm tra kết quả
+          if (checkWinner()) {
+            statusElement.textContent = `Người chơi ${currentPlayer} thắng! 🎉`;
+            gameActive = false;
+          } else if (checkDraw()) {
+            statusElement.textContent = "Hòa! 😐";
+            gameActive = false;
+          } else {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            statusElement.textContent = `Đến lượt người chơi ${currentPlayer}`;
+          }
+        }
+
+        // Tìm nước đi tốt nhất
+        function findBestMove() {
+          // Kiểm tra các hàng, cột và đường chéo
+          for (let i = 0; i < boardSize; i++) {
+            // Kiểm tra hàng
+            if (canBlockOrWin(board[i])) {
+              return { row: i, col: board[i].indexOf("") };
+            }
+            // Kiểm tra cột
+            const col = board.map((row) => row[i]);
+            if (canBlockOrWin(col)) {
+              return { row: col.indexOf(""), col: i };
+            }
+          }
+          // Kiểm tra đường chéo chính
+          const mainDiagonal = board.map((row, idx) => row[idx]);
+          if (canBlockOrWin(mainDiagonal)) {
+            const index = mainDiagonal.indexOf("");
+            return { row: index, col: index };
+          }
+          // Kiểm tra đường chéo phụ
+          const antiDiagonal = board.map(
+            (row, idx) => row[boardSize - 1 - idx]
+          );
+          if (canBlockOrWin(antiDiagonal)) {
+            const index = antiDiagonal.indexOf("");
+            return { row: index, col: boardSize - 1 - index };
+          }
+
+          return null; // Không có nước đi đặc biệt
+        }
+
+        // Kiểm tra nếu có thể chặn hoặc thắng
+        function canBlockOrWin(line) {
+          const countPlayer = line.filter((cell) => cell === "X").length;
+          const countAI = line.filter((cell) => cell === "O").length;
+          return (countPlayer === 2 || countAI === 2) && line.includes("");
+        }
+
+        // Chuyển đổi chế độ chơi
+        function toggleMode() {
+          singlePlayerMode = !singlePlayerMode;
+          modeSwitchButton.textContent = singlePlayerMode
+            ? "Chế độ: 1 Người Chơi"
+            : "Chế độ: 2 Người Chơi";
+          resetGame();
+        }
+
+        // Khởi động lại trò chơi
+        function resetGame() {
+          board = Array(boardSize)
+            .fill(null)
+            .map(() => Array(boardSize).fill(""));
+          currentPlayer = "X";
+          gameActive = true;
+          statusElement.textContent = `Đến lượt người chơi ${currentPlayer}`;
+          createBoard();
+        }
+
+        // Gắn sự kiện
+        resetButton.addEventListener("click", resetGame);
+        modeSwitchButton.addEventListener("click", toggleMode);
+
+        // Khởi tạo bảng
+        resetGame();
+      });
+    </script>
+  </body>
+</html>

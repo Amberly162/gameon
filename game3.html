@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Shooter Game</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #000;
+        font-family: Arial, sans-serif;
+      }
+
+      #gameCanvas {
+        border: 2px solid #fff;
+        background-color: #111;
+      }
+
+      .game-info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        font-size: 18px;
+      }
+
+      .game-over {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        color: white;
+        text-align: center;
+        display: none;
+      }
+
+      #pause-btn,
+      #home-btn {
+        position: absolute;
+        top: 20px;
+        padding: 10px;
+        background-color: #ff4b5c;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #pause-btn.active {
+        background-color: #4caf50;
+      }
+
+      #pause-btn {
+        left: 100px;
+      }
+
+      #home-btn {
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        background-color: #4caf50;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-info" id="score">Score: 0</div>
+    <div class="game-over" id="gameOver">Game Over! Press Enter to Restart</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <button id="pause-btn" class="active">Pause</button>
+    <button id="home-btn">Back to Homepage</button>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const scoreElement = document.getElementById("score");
+      const gameOverElement = document.getElementById("gameOver");
+      const pauseBtn = document.getElementById("pause-btn");
+      const homeBtn = document.getElementById("home-btn");
+      let score = 0;
+      let isGameOver = false;
+      let isPaused = false;
+
+      const player = {
+        x: canvas.width / 2 - 25,
+        y: canvas.height - 60,
+        width: 50,
+        height: 50,
+        speed: 5,
+        dx: 0,
+      };
+
+      const bullets = [];
+      const enemies = [];
+      let enemyInterval;
+      let bulletInterval;
+
+      function drawPlayer() {
+        ctx.fillStyle = "#00f";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+      }
+
+      function drawBullets() {
+        ctx.fillStyle = "#f00";
+        bullets.forEach((bullet, index) => {
+          if (bullet.y <= 0) {
+            bullets.splice(index, 1);
+          } else {
+            ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+            bullet.y -= bullet.speed;
+          }
+        });
+      }
+
+      function drawEnemies() {
+        ctx.fillStyle = "#0f0";
+        enemies.forEach((enemy, index) => {
+          if (enemy.y >= canvas.height) {
+            enemies.splice(index, 1);
+          } else {
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            enemy.y += enemy.speed;
+          }
+        });
+      }
+
+      function detectCollisions() {
+        bullets.forEach((bullet, bulletIndex) => {
+          enemies.forEach((enemy, enemyIndex) => {
+            if (
+              bullet.x < enemy.x + enemy.width &&
+              bullet.x + bullet.width > enemy.x &&
+              bullet.y < enemy.y + enemy.height &&
+              bullet.y + bullet.height > enemy.y
+            ) {
+              enemies.splice(enemyIndex, 1);
+              bullets.splice(bulletIndex, 1);
+              score++;
+              scoreElement.textContent = `Score: ${score}`;
+            }
+          });
+        });
+
+        enemies.forEach((enemy) => {
+          if (
+            player.x < enemy.x + enemy.width &&
+            player.x + player.width > enemy.x &&
+            player.y < enemy.y + enemy.height &&
+            player.y + player.height > enemy.y
+          ) {
+            gameOver();
+          }
+        });
+      }
+
+      function movePlayer() {
+        if (player.dx > 0 && player.x + player.width < canvas.width) {
+          player.x += player.speed;
+        } else if (player.dx < 0 && player.x > 0) {
+          player.x -= player.speed;
+        }
+      }
+
+      function moveBullets() {
+        bullets.forEach((bullet) => (bullet.y -= bullet.speed));
+      }
+
+      function spawnEnemies() {
+        const enemyWidth = 50;
+        const enemyHeight = 50;
+        const enemySpeed = Math.random() * 2 + 1;
+        const enemyX = Math.random() * (canvas.width - enemyWidth);
+        enemies.push({
+          x: enemyX,
+          y: -enemyHeight,
+          width: enemyWidth,
+          height: enemyHeight,
+          speed: enemySpeed,
+        });
+      }
+
+      function gameOver() {
+        isGameOver = true;
+        gameOverElement.style.display = "block";
+        homeBtn.style.display = "block";
+        clearInterval(enemyInterval);
+        clearInterval(bulletInterval);
+      }
+
+      function resetGame() {
+        score = 0;
+        scoreElement.textContent = `Score: ${score}`;
+        enemies.length = 0;
+        bullets.length = 0;
+        player.x = canvas.width / 2 - 25;
+        player.y = canvas.height - 60;
+        gameOverElement.style.display = "none";
+        homeBtn.style.display = "none";
+        isGameOver = false;
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+        enemyInterval = setInterval(spawnEnemies, 2000);
+        bulletInterval = setInterval(moveBullets, 20);
+        gameLoop();
+      }
+
+      function togglePause() {
+        if (isGameOver) return;
+        isPaused = !isPaused;
+        if (isPaused) {
+          clearInterval(enemyInterval);
+          clearInterval(bulletInterval);
+          pauseBtn.textContent = "Resume";
+        } else {
+          enemyInterval = setInterval(spawnEnemies, 2000);
+          bulletInterval = setInterval(moveBullets, 20);
+          pauseBtn.textContent = "Pause";
+          gameLoop();
+        }
+      }
+
+      function gameLoop() {
+        if (isGameOver || isPaused) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        movePlayer();
+        drawPlayer();
+        drawBullets();
+        drawEnemies();
+        detectCollisions();
+        requestAnimationFrame(gameLoop);
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "ArrowRight") {
+          player.dx = player.speed;
+        } else if (e.code === "ArrowLeft") {
+          player.dx = -player.speed;
+        } else if (e.code === "Space") {
+          bullets.push({
+            x: player.x + player.width / 2 - 2,
+            y: player.y,
+            width: 4,
+            height: 10,
+            speed: 5,
+          });
+        } else if (e.code === "Pause" || e.code === "KeyP") {
+          togglePause();
+        } else if (e.code === "Enter" && isGameOver) {
+          resetGame();
+        }
+      });
+
+      document.addEventListener("keyup", (e) => {
+        if (e.code === "ArrowRight" || e.code === "ArrowLeft") {
+          player.dx = 0;
+        }
+      });
+
+      pauseBtn.addEventListener("click", togglePause);
+      homeBtn.addEventListener("click", () => {
+        window.location.href = "index2.html"; // Replace with the homepage URL
+      });
+
+      enemyInterval = setInterval(spawnEnemies, 2000); // Spawn enemies every 2 seconds
+      bulletInterval = setInterval(moveBullets, 20);
+
+      gameLoop();
+    </script>
+  </body>
+</html>
